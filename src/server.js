@@ -4,6 +4,8 @@ import morgan from 'morgan'
 import cors from 'cors'
 
 import './config'
+import { connect } from './utils'
+import asteroidRouter from './resources/asteroid/asteroid.router'
 
 export const app = express()
 
@@ -14,14 +16,12 @@ app.use(json())
 app.use(urlencoded({ extended: true }))
 app.use(morgan('dev'))
 
-app.get('/test', (req, res) => {
-  res.status(200).send({ message: 'test' })
-})
+app.use('/api/asteroid', asteroidRouter)
 
 export const start = async () => {
-  const port = process.env.PORT || 3000;
-
+  const port = process.env.PORT || 3000
   try {
+    await connect()
     app.listen(port, () => {
       console.log(`🚀 Server ready at http://localhost:${port}`)
     })
