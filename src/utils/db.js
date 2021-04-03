@@ -6,5 +6,6 @@ export const connect = (url = process.env.MONGO_URI, opts = {}) => {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false,
+    useCreateIndex: true,
   })
 }
