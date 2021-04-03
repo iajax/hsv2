@@ -1,0 +1,48 @@
+{
+  "name": "hsv2",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/iajax/hsv2.git",
+  "author": "Richard C. <inf.darze@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "build": "babel src --out-dir dist",
+    "dev": "nodemon --exec yarn restart",
+    "restart": "rimraf dist && yarn build && yarn start",
+    "start": "yarn build && node dist/index.js",
+    "format": "prettier --write \"src/**/*.{js,jsx}\"",
+    "lint": "eslint \"src/**/*.{js,jsx}\" --quiet"
+  },
+  "dependencies": {
+    "express": "4.17.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "7.13.14",
+    "@babel/core": "7.13.14",
+    "@babel/plugin-proposal-class-properties": "7.13.0",
+    "@babel/plugin-proposal-nullish-coalescing-operator": "7.13.8",
+    "@babel/plugin-proposal-object-rest-spread": "7.13.8",
+    "@babel/plugin-proposal-optional-chaining": "7.13.12",
+    "@babel/preset-env": "7.13.12",
+    "babel-eslint": "10.1.0",
+    "eslint": "7.23.0",
+    "eslint-config-prettier": "8.1.0",
+    "eslint-loader": "4.0.2",
+    "husky": "6.0.0",
+    "lint-staged": "10.5.4",
+    "nodemon": "2.0.7",
+    "prettier": "2.2.1",
+    "rimraf": "3.0.2"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,jsx}": [
+      "yarn format",
+      "yarn lint"
+    ]
+  }
+}
