@@ -31,8 +31,8 @@ export const signin = async (req, res) => {
   }
 
   try {
-    const user = await User.findOne({ email: req.body.email })
-      .select('email password')
+    const user = await User.findOne({ username: req.body.username })
+      .select('username password')
       .exec()
 
     if (!user)
