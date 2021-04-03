@@ -1,0 +1,62 @@
+version: 2.1
+
+orbs:
+  node: circleci/node@4.2.0
+
+defaults: &defaults
+  executor:
+    name: node/default
+    tag: 14.15.4
+  working_directory: ~/repo
+
+commands:
+  restore-cache-cmd:
+    steps:
+      - restore_cache:
+          keys:
+            - yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - yarn-packages-v1-{{ .Branch }}-
+            - yarn-packages-v1-
+  save-cache-cmd:
+    steps:
+      - save_cache:
+          paths:
+            - ~/.cache/yarn
+          key: yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
+
+jobs:
+  install:
+    <<: *defaults
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/repo
+      - restore-cache-cmd
+      - run: yarn install
+      - save-cache-cmd
+      - persist_to_workspace:
+          root: .
+          paths: .
+  lint:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/repo
+      - run: yarn lint
+  build:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/repo
+      - run: yarn build
+
+workflows:
+  test-and-build:
+    jobs:
+      - install
+      - lint:
+          requires:
+            - install
+      - build:
+          requires:
+            - lint
