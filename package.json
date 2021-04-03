@@ -12,7 +12,8 @@
     "start": "yarn build && NODE_ENV=dev node dist/index.js",
     "format": "prettier --write \"src/**/*.{js,jsx}\"",
     "lint": "eslint \"src/**/*.{js,jsx}\" --quiet",
-    "test": "NODE_ENV=testing jest --forceExit --detectOpenHandles --silent"
+    "test": "NODE_ENV=testing jest --forceExit --detectOpenHandles --silent",
+    "seed": "NODE_ENV=dev babel-node mongodb/init.js"
   },
   "dependencies": {
     "body-parser": "1.19.0",
@@ -26,6 +27,7 @@
     "@babel/cli": "7.13.14",
     "@babel/core": "7.13.14",
     "@babel/eslint-parser": "7.13.14",
+    "@babel/node": "7.13.13",
     "@babel/plugin-proposal-class-properties": "7.13.0",
     "@babel/plugin-proposal-nullish-coalescing-operator": "7.13.8",
     "@babel/plugin-proposal-object-rest-spread": "7.13.8",
