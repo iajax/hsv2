@@ -7,12 +7,12 @@
   "license": "MIT",
   "scripts": {
     "build": "babel src --out-dir dist",
-    "dev": "NODE_ENV=dev nodemon --exec yarn restart",
+    "dev": "nodemon --exec yarn restart",
     "restart": "rimraf dist && yarn build && yarn start",
-    "start": "yarn build && NODE_ENV=dev node dist/index.js",
+    "start": "yarn build && NODE_ENV=production node dist/index.js",
     "format": "prettier --write \"src/**/*.{js,jsx}\"",
     "lint": "eslint \"src/**/*.{js,jsx}\" --quiet",
-    "test": "NODE_ENV=testing jest --forceExit --detectOpenHandles --silent",
+    "test": "NODE_ENV=test jest --forceExit --detectOpenHandles --silent",
     "seed": "NODE_ENV=dev babel-node mongodb/init.js"
   },
   "dependencies": {
