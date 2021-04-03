@@ -1,0 +1,14 @@
+{
+	"id": "7fb096a6-74ae-4bf9-b950-9bd5a377c456",
+	"name": "Hsv2",
+	"values": [
+		{
+			"key": "url",
+			"value": "http://localhost:3000",
+			"enabled": true
+		}
+	],
+	"_postman_variable_scope": "environment",
+	"_postman_exported_at": "2021-04-03T20:53:46.523Z",
+	"_postman_exported_using": "Postman/7.36.5"
+}

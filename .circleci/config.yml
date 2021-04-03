@@ -2,6 +2,7 @@ version: 2.1
 
 orbs:
   node: circleci/node@4.2.0
+  newman: postman/newman@0.0.2
 
 defaults: &defaults
   executor:
@@ -49,9 +50,16 @@ jobs:
       - attach_workspace:
           at: ~/repo
       - run: yarn build
+  newman:
+    executor: newman/postman-newman-docker
+    steps:
+      - checkout
+      - newman/newman-run:
+          collection: ./newman/Hsv2.postman_collection.json
+          environment: ./newman/environment.json
 
 workflows:
-  test-and-build:
+  build_and_test:
     jobs:
       - install
       - lint:
@@ -60,3 +68,6 @@ workflows:
       - build:
           requires:
             - lint
+      - newman:
+          requires:
+            - build

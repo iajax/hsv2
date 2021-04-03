@@ -1,0 +1,726 @@
+{
+	"info": {
+		"_postman_id": "672058c0-5c63-451f-bd34-8ff12a95838e",
+		"name": "Hsv2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "signup",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"signup\", function () { ",
+							"    pm.response.to.have.status(201);",
+							"    const { token } = pm.response.json();",
+							"    pm.expect(token).to.be.a('string');",
+							"    ",
+							"    pm.request.body.urlencoded.map(e => pm.globals.set(e.key, e.value));",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "sirenia",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "wwww3",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/signup",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"signup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "signin",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"signin\", function () { ",
+							"    pm.response.to.have.status(201);",
+							"    const { token } = pm.response.json();",
+							"    pm.expect(token).to.be.a('string');",
+							"    pm.globals.set(\"token\", token);",
+							"});",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "{{username}}",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "{{password}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/signin",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"signin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getMe",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"getMe\", function () { ",
+							"    pm.response.to.have.status(200);",
+							"    const { data } = pm.response.json();",
+							"    pm.expect(data).to.be.an('object').that.has.property('username');",
+							"    pm.globals.set(\"userId\", data._id);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
+				"url": {
+					"raw": "{{url}}/api/user",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getOneUser",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"getOneUser\", function () { ",
+							"    pm.response.to.have.status(200);",
+							"    const { data } = pm.response.json();",
+							"    pm.expect(data).to.be.an('object');",
+							"    pm.expect(data._id).to.eq(pm.request.url.path[2]);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "authorization",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "darze",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "password",
+							"value": "antrax",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/api/user/{{userId}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"user",
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getManyAsteroid",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"getManyAsteroid\", function () { ",
+							"    pm.response.to.have.status(200);",
+							"    const { data } = pm.response.json();",
+							"    pm.expect(data).to.be.an('array');",
+							"",
+							"    data.forEach(e => pm.expect(e).to.have.any.keys('name', 'a', 'e', 'i', 'om', 'w', 'ma'));",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "authorization",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "darze",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "password",
+							"value": "antrax",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/api/asteroid",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"asteroid"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "createOneAsteroid",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"createOneAsteroid\", function () { ",
+							"    pm.response.to.have.status(201);",
+							"    const { data } = pm.response.json();",
+							"    pm.expect(data).to.be.an('object').that.has.property('name');",
+							"    pm.globals.set(\"asteroidId\", data._id);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "authorization",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "name",
+							"value": "6666 Ajax (69 WW)",
+							"type": "text"
+						},
+						{
+							"key": "a",
+							"value": "61.53675306",
+							"type": "text"
+						},
+						{
+							"key": "e",
+							"value": "1.290033303",
+							"type": "text"
+						},
+						{
+							"key": "i",
+							"value": "0.29927236",
+							"type": "text"
+						},
+						{
+							"key": "om",
+							"value": "64.00479642",
+							"type": "text"
+						},
+						{
+							"key": "w",
+							"value": "94.36039279",
+							"type": "text"
+						},
+						{
+							"key": "ma",
+							"value": "61.53675306",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/api/asteroid",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"asteroid"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getOneAsteroid",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"getOneAsteroid\", function () { ",
+							"    pm.response.to.have.status(200);",
+							"    const { data } = pm.response.json();",
+							"    pm.expect(data._id).to.eq(pm.request.url.path[2]);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "authorization",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
+				"url": {
+					"raw": "{{url}}/api/asteroid/{{asteroidId}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"asteroid",
+						"{{asteroidId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updateOneAsteroid",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"updateOneAsteroid\", function () { ",
+							"    pm.response.to.have.status(200);",
+							"    const { data } = pm.response.json();",
+							"    pm.expect(data._id).to.eq(pm.request.url.path[2]);",
+							"    pm.expect(data.name).to.eq(pm.request.body.urlencoded.find(e => e.key === 'name').value);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "authorization",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "name",
+							"value": "6666 Ajax (67 WW)",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/api/asteroid/{{asteroidId}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"asteroid",
+						"{{asteroidId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "removeOneAsteroid",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"removeOneAsteroid\", function () { ",
+							"    pm.response.to.have.status(200);",
+							"    const { data } = pm.response.json();",
+							"    pm.expect(data._id).to.eq(pm.request.url.path[2]);",
+							"    pm.globals.unset('asteroidId');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "authorization",
+						"type": "text",
+						"value": "",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
+				"url": {
+					"raw": "{{url}}/api/asteroid/{{asteroidId}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"asteroid",
+						"{{asteroidId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "findAll",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"findAll\", function () { ",
+							"    pm.response.to.have.status(200);",
+							"    const { data } = pm.response.json();",
+							"    pm.expect(data).to.be.an('object');",
+							"",
+							"    if (data && data.asteroids && data.asteroids.length) {",
+							"        data.asteroids.forEach(e => pm.expect(e).to.have.any.keys('name', 'a', 'e', 'i', 'om', 'w', 'ma'));",
+							"    }",
+							"    if (data && data.users && data.users.length) {",
+							"        data.users.forEach(e => pm.expect(e).to.have.any.keys('_id', 'username'));",
+							"    }",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
+				"url": {
+					"raw": "{{url}}/api/find-all",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"find-all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "removeOneUser",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"removeOneUser\", function () { ",
+							"    pm.response.to.have.status(200);",
+							"    const { data } = pm.response.json();",
+							"    pm.expect(data._id).to.eq(pm.request.url.path[2]);",
+							"    pm.globals.unset('userId');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "authorization",
+						"type": "text",
+						"value": "",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
+				"url": {
+					"raw": "{{url}}/api/user/{{userId}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"user",
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getManyAsteroidWithoutAuth",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"getManyAsteroid\", function () { ",
+							"    pm.response.to.have.status(401);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
+				"url": {
+					"raw": "{{url}}/api/asteroid",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"asteroid"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
