@@ -31,8 +31,11 @@ const asteroidSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    loc: [Number],
   },
   { timestamps: true }
 )
+
+asteroidSchema.index({ loc: '2d' }, { min: -360, max: 360 })
 
 export const Asteroid = mongoose.model('asteroid', asteroidSchema)
