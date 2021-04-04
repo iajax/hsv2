@@ -24,8 +24,35 @@ export const updateMe = async (req, res) => {
   }
 }
 
+export const findAll = async (req, res) => {
+  try {
+    const users = await User.find().lean().exec()
+
+    return res.status(200).send({ data: { users } })
+  } catch (err) {
+    return res.status(500).end()
+  }
+}
+
+export const addList = async (req, res) => {
+  try {
+    const { users } = req.body
+    let data = {}
+
+    if (users?.length) {
+      data.users = await User.create(users)
+    }
+
+    return res.status(200).send({ data })
+  } catch (err) {
+    return res.status(500).end()
+  }
+}
+
 export default {
   ...crudControllers(User),
+  findAll,
+  addList,
   me,
   updateMe,
 }
