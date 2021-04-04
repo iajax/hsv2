@@ -1,43 +1,40 @@
 import csvtojson from 'csvtojson'
+import { body2latlong } from 'keplerjs'
 
 import '../src/config'
 import { connect } from '../src/utils'
 import { Asteroid } from '../src/resources/asteroid/asteroid.model'
 import { Customer } from '../src/resources/customer/customer.model'
-
-// const csvParser = async (csv) => {
-//   let lines = csv.split('\n')
-//   const header = lines.shift().split(',')
-//   lines.pop()
-
-//   return lines.map((line) => {
-//     const bits = line.split(',')
-//     let obj = {}
-//     header.forEach((h, i) => {
-//       let key = h?.trim()
-//       let value = bits[i]?.trim()
-//       if (key === 'full_name') key = 'name'
-//       else value = parseFloat(value)
-
-//       return (obj[key] = value)
-//     })
-
-//     return obj
-//   })
-// }
 ;(async () => {
-  const asteroids = await csvtojson().fromFile(`${__dirname}/data.csv`)
-  const customers = await csvtojson().fromFile(
-    `${__dirname}/List_Of_Clients.csv`
-  )
   try {
-    console.log('Emptying database collection...')
+    let asteroids = await csvtojson().fromFile(`${__dirname}/data.csv`)
+    let customers = await csvtojson().fromFile(
+      `${__dirname}/List_Of_Clients.csv`
+    )
+
+    asteroids = asteroids.map((e) => {
+      const { lat, long } = body2latlong(e)
+
+      return {
+        ...e,
+        loc: [long, lat],
+      }
+    })
+
+    customers = customers.map((e) => ({
+      ...e,
+      Name: e.Name?.replace('ÿ', ''),
+      loc: {
+        coordinates: [e.Longitude, e.Latitude],
+      },
+    }))
+
     await connect()
     await Asteroid.deleteMany()
     await Customer.deleteMany()
     console.log('Loading data...')
     const resAsteroids = await Asteroid.insertMany(asteroids)
-    const resCustomers = await Customer.insertMany(customers)
+    const resCustomers = await Customer.create(customers)
 
     console.log(
       `Data successfully loaded!. ${resCustomers.length} customers and ${resAsteroids.length} asteroids have been created.`
