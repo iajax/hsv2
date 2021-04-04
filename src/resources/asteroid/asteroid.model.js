@@ -34,10 +34,12 @@ const asteroidSchema = new mongoose.Schema(
     latitude: {
       type: Number,
       required: true,
+      default: 0.0,
     },
     longitude: {
       type: Number,
       required: true,
+      default: 0.0,
     },
   },
   { timestamps: true }
