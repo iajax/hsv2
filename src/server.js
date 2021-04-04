@@ -4,7 +4,7 @@ import morgan from 'morgan'
 import cors from 'cors'
 
 import './config'
-import { connect, protect, signin, signup, findAll, addList } from './utils'
+import { connect, protect, signin, signup } from './utils'
 import asteroidRouter from './resources/asteroid/asteroid.router'
 import userRouter from './resources/user/user.router'
 import customerRouter from './resources/customer/customer.router'
@@ -21,8 +21,6 @@ app.use(morgan('dev'))
 app.post('/signin', signin)
 app.post('/signup', signup)
 app.use('/api', protect)
-// app.get('/api/find-all', findAll)
-// app.post('/api/add-list', addList)
 app.use('/api/asteroid', asteroidRouter)
 app.use('/api/user', userRouter)
 app.use('/api/customer', customerRouter)

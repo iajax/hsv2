@@ -2,9 +2,9 @@ import { Asteroid } from '../asteroid.model'
 
 describe('Asteroid model', () => {
   describe('schema', () => {
-    test('name', () => {
-      const name = Asteroid.schema.obj.name
-      expect(name).toEqual({
+    test('full_name', () => {
+      const full_name = Asteroid.schema.obj.full_name
+      expect(full_name).toEqual({
         type: String,
         required: true,
         trim: true,
