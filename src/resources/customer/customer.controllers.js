@@ -1,11 +1,11 @@
 import { crudControllers } from '../../utils'
-import { Asteroid } from './asteroid.model'
+import { Customer } from './customer.model'
 
 export const findAll = async (req, res) => {
   try {
-    const asteroids = await Asteroid.find().lean().exec()
+    const customers = await Customer.find().lean().exec()
 
-    return res.status(200).send({ data: { asteroids } })
+    return res.status(200).send({ data: { customers } })
   } catch (err) {
     return res.status(500).end()
   }
@@ -13,11 +13,11 @@ export const findAll = async (req, res) => {
 
 export const addList = async (req, res) => {
   try {
-    const { asteroids } = req.body
+    const { customers } = req.body
     let data = {}
 
-    if (asteroids?.length) {
-      data.users = await Asteroid.create(asteroids)
+    if (customers?.length) {
+      data.users = await Customer.create(customers)
     }
 
     return res.status(200).send({ data })
@@ -27,7 +27,7 @@ export const addList = async (req, res) => {
 }
 
 export default {
-  ...crudControllers(Asteroid),
+  ...crudControllers(Customer),
   findAll,
   addList,
 }
