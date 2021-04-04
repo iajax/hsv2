@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 
 const asteroidSchema = new mongoose.Schema(
   {
-    name: {
+    full_name: {
       type: String,
       required: true,
       trim: true,

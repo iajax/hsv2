@@ -57,7 +57,7 @@ export const removeOne = (model) => async (req, res) => {
 
     if (!removed) return res.status(400).end()
 
-    return res.status(200).json({ data: removed })
+    return res.status(204).json({ data: null })
   } catch (e) {
     console.error(e)
     res.status(400).end()
