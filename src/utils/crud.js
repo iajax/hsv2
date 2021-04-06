@@ -33,6 +33,21 @@ export const createOne = (model) => async (req, res) => {
   }
 }
 
+export const createMany = (model) => async (req, res) => {
+  try {
+    if (req.body?.data?.length) {
+      const doc = await model.create(req.body?.data)
+
+      res.status(201).send({ data: doc })
+    }
+
+    res.status(200).send({ data: [] })
+  } catch (e) {
+    console.error(e)
+    res.status(400).end()
+  }
+}
+
 export const updateOne = (model) => async (req, res) => {
   try {
     const updated = await model
@@ -70,4 +85,5 @@ export const crudControllers = (model) => ({
   getMany: getMany(model),
   getOne: getOne(model),
   createOne: createOne(model),
+  createMany: createMany(model),
 })

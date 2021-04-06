@@ -58,5 +58,10 @@ describe('Asteroid model', () => {
         required: true,
       })
     })
+
+    test('loc', () => {
+      const loc = Asteroid.schema.obj.loc
+      expect(loc).toEqual([Number])
+    })
   })
 })

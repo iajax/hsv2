@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import { body2latlong } from 'keplerjs'
 
 const asteroidSchema = new mongoose.Schema(
   {
@@ -37,5 +38,14 @@ const asteroidSchema = new mongoose.Schema(
 )
 
 asteroidSchema.index({ loc: '2d' }, { min: -360, max: 360 })
+
+asteroidSchema.pre('save', async function (next) {
+  try {
+    const { lat, long } = body2latlong(this)
+    this.loc = [long, lat]
+  } catch (err) {
+    next(err)
+  }
+})
 
 export const Asteroid = mongoose.model('asteroid', asteroidSchema)

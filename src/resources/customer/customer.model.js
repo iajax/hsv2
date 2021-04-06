@@ -4,56 +4,42 @@ import { Asteroid } from '../asteroid/asteroid.model'
 
 const customerSchema = new mongoose.Schema(
   {
-    Name: {
+    first_name: {
       type: String,
-      required: [true, 'Please add a name'],
+      required: [true, 'Please add a first_name'],
       trim: true,
     },
-    Lastname: {
+    last_name: {
       type: String,
-      required: [true, 'Please add a lastname'],
+      required: [true, 'Please add a last_name'],
     },
-    Age: {
+    age: {
       type: Number,
       required: [true, 'Please add an age'],
     },
-    Latitude: {
-      type: Number,
-      required: [true, 'Please provide a latitude coord'],
-    },
-    Longitude: {
-      type: Number,
-      required: [true, 'Please provide a longitude coord'],
-    },
-    Hotspot_asteroids: {
+    hotspot_asteroids: {
       type: Number,
       required: [true, 'Please provide a hotspot asteroids number'],
       default: 0,
     },
-    Price: {
+    price: {
       type: Number,
       required: [true, 'Please provide a price'],
       default: 0,
     },
-    loc: {
-      type: {
-        type: String,
-        default: 'Point',
-      },
-      coordinates: [Number],
-    },
+    loc: [Number],
   },
   {
     timestamps: true,
   }
 )
 
-customerSchema.index({ loc: '2dsphere' })
+customerSchema.index({ loc: '2d' })
 
 customerSchema.methods.getHotspotAsteroids = async function () {
   return Asteroid.count({
     loc: {
-      $near: this.loc.coordinates,
+      $near: this.loc,
       $maxDistance: 15,
     },
   })
@@ -62,11 +48,11 @@ customerSchema.methods.getHotspotAsteroids = async function () {
 customerSchema.pre('save', async function (next) {
   try {
     const hotspotAsteroids = await this.getHotspotAsteroids()
-    this.Hotspot_asteroids = hotspotAsteroids
-    this.Price = 170 + ((100 * this.Age) / 35 + 10 * hotspotAsteroids)
+    this.hotspot_asteroids = hotspotAsteroids
+    this.price = 170 + ((100 * this.age) / 35 + 10 * hotspotAsteroids)
   } catch (err) {
     next(err)
   }
 })
 
-export const Customer = mongoose.model('Customer', customerSchema)
+export const Customer = mongoose.model('customer', customerSchema)

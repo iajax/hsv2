@@ -3,10 +3,10 @@ import controllers from './user.controllers'
 
 const router = Router()
 
-router.route('/').get(controllers.me).put(controllers.updateMe)
+router.route('/').get(controllers.getMany)
 
-router.route('/find-all').get(controllers.findAll)
-router.route('/add-list').post(controllers.addList)
+router.route('/me').get(controllers.me).put(controllers.updateMe)
+router.route('/add-list').post(controllers.createMany)
 
 router.route('/:id').get(controllers.getOne).delete(controllers.removeOne)
 

@@ -3,10 +3,9 @@ import controllers from './customer.controllers'
 
 const router = Router()
 
-router.route('/').post(controllers.createOne)
+router.route('/').get(controllers.getMany).post(controllers.createOne)
 
-router.route('/find-all').get(controllers.findAll)
-router.route('/add-list').post(controllers.addList)
+router.route('/add-list').post(controllers.createMany)
 
 router
   .route('/:id')
