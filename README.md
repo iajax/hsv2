@@ -98,7 +98,7 @@ Exec test with Newman
 ```shell
 npm install -g newman
 
-newman run newman/Hsv2.postman_collection.json -e newman/environment.json
+newman run newman/Hsv2_Group.postman_collection.json -e newman/environment.json
 ```
 
 ### References

@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "672058c0-5c63-451f-bd34-8ff12a95838e",
-		"name": "Hsv2",
+		"_postman_id": "65355202-ff3c-49ff-8f9b-1464cc5553d9",
+		"name": "Hsv2_Group",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -144,13 +144,14 @@
 					"urlencoded": []
 				},
 				"url": {
-					"raw": "{{url}}/api/user",
+					"raw": "{{url}}/api/user/me",
 					"host": [
 						"{{url}}"
 					],
 					"path": [
 						"api",
-						"user"
+						"user",
+						"me"
 					]
 				}
 			},
@@ -230,6 +231,139 @@
 			"response": []
 		},
 		{
+			"name": "addListAsteroid",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"addListAsteroid\", function () { ",
+							"    pm.response.to.have.status(200);",
+							"    const { data } = pm.response.json();",
+							"    pm.expect(data).to.be.an('array');",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
+				"url": {
+					"raw": "{{url}}/api/asteroid/add-list",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"asteroid",
+						"add-list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "createOneAsteroid",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"createOneAsteroid\", function () { ",
+							"    pm.response.to.have.status(201);",
+							"    const { data } = pm.response.json();",
+							"    pm.expect(data).to.be.an('object').that.has.property('full_name');",
+							"    pm.globals.set(\"asteroidId\", data._id);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "full_name",
+							"value": "6666 Ajax (69 WW)",
+							"type": "text"
+						},
+						{
+							"key": "a",
+							"value": "61.53675306",
+							"type": "text"
+						},
+						{
+							"key": "e",
+							"value": "1.290033303",
+							"type": "text"
+						},
+						{
+							"key": "i",
+							"value": "0.29927236",
+							"type": "text"
+						},
+						{
+							"key": "om",
+							"value": "64.00479642",
+							"type": "text"
+						},
+						{
+							"key": "w",
+							"value": "94.36039279",
+							"type": "text"
+						},
+						{
+							"key": "ma",
+							"value": "61.53675306",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/api/asteroid",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"asteroid"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "getManyAsteroid",
 			"event": [
 				{
@@ -241,7 +375,7 @@
 							"    const { data } = pm.response.json();",
 							"    pm.expect(data).to.be.an('array');",
 							"",
-							"    data.forEach(e => pm.expect(e).to.have.any.keys('name', 'a', 'e', 'i', 'om', 'w', 'ma'));",
+							"    data.forEach(e => pm.expect(e).to.have.any.keys('full_name', 'a', 'e', 'i', 'om', 'w', 'ma'));",
 							"});",
 							""
 						],
@@ -303,82 +437,30 @@
 			"response": []
 		},
 		{
-			"name": "createOneAsteroid",
+			"name": "getManyAsteroidWithoutAuth",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"createOneAsteroid\", function () { ",
-							"    pm.response.to.have.status(201);",
-							"    const { data } = pm.response.json();",
-							"    pm.expect(data).to.be.an('object').that.has.property('name');",
-							"    pm.globals.set(\"asteroidId\", data._id);",
-							"});"
+							"pm.test(\"getManyAsteroid\", function () { ",
+							"    pm.response.to.have.status(401);",
+							"});",
+							""
 						],
 						"type": "text/javascript"
 					}
 				}
 			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
 			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{token}}",
-							"type": "string"
-						}
-					]
-				},
-				"method": "POST",
-				"header": [
-					{
-						"key": "authorization",
-						"value": "",
-						"type": "text",
-						"disabled": true
-					}
-				],
+				"method": "GET",
+				"header": [],
 				"body": {
 					"mode": "urlencoded",
-					"urlencoded": [
-						{
-							"key": "name",
-							"value": "6666 Ajax (69 WW)",
-							"type": "text"
-						},
-						{
-							"key": "a",
-							"value": "61.53675306",
-							"type": "text"
-						},
-						{
-							"key": "e",
-							"value": "1.290033303",
-							"type": "text"
-						},
-						{
-							"key": "i",
-							"value": "0.29927236",
-							"type": "text"
-						},
-						{
-							"key": "om",
-							"value": "64.00479642",
-							"type": "text"
-						},
-						{
-							"key": "w",
-							"value": "94.36039279",
-							"type": "text"
-						},
-						{
-							"key": "ma",
-							"value": "61.53675306",
-							"type": "text"
-						}
-					]
+					"urlencoded": []
 				},
 				"url": {
 					"raw": "{{url}}/api/asteroid",
@@ -462,7 +544,7 @@
 							"    pm.response.to.have.status(200);",
 							"    const { data } = pm.response.json();",
 							"    pm.expect(data._id).to.eq(pm.request.url.path[2]);",
-							"    pm.expect(data.name).to.eq(pm.request.body.urlencoded.find(e => e.key === 'name').value);",
+							"    pm.expect(data.full_name).to.eq(pm.request.body.urlencoded.find(e => e.key === 'full_name').value);",
 							"});"
 						],
 						"type": "text/javascript"
@@ -481,19 +563,12 @@
 					]
 				},
 				"method": "PUT",
-				"header": [
-					{
-						"key": "authorization",
-						"value": "",
-						"type": "text",
-						"disabled": true
-					}
-				],
+				"header": [],
 				"body": {
 					"mode": "urlencoded",
 					"urlencoded": [
 						{
-							"key": "name",
+							"key": "full_name",
 							"value": "6666 Ajax (67 WW)",
 							"type": "text"
 						}
@@ -521,9 +596,7 @@
 					"script": {
 						"exec": [
 							"pm.test(\"removeOneAsteroid\", function () { ",
-							"    pm.response.to.have.status(200);",
-							"    const { data } = pm.response.json();",
-							"    pm.expect(data._id).to.eq(pm.request.url.path[2]);",
+							"    pm.response.to.have.status(204);",
 							"    pm.globals.unset('asteroidId');",
 							"});"
 						],
@@ -543,14 +616,7 @@
 					]
 				},
 				"method": "DELETE",
-				"header": [
-					{
-						"key": "authorization",
-						"type": "text",
-						"value": "",
-						"disabled": true
-					}
-				],
+				"header": [],
 				"body": {
 					"mode": "urlencoded",
 					"urlencoded": []
@@ -570,23 +636,147 @@
 			"response": []
 		},
 		{
-			"name": "findAll",
+			"name": "addListCustomer",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"findAll\", function () { ",
+							"pm.test(\"addListCustomer\", function () { ",
 							"    pm.response.to.have.status(200);",
 							"    const { data } = pm.response.json();",
-							"    pm.expect(data).to.be.an('object');",
-							"",
-							"    if (data && data.asteroids && data.asteroids.length) {",
-							"        data.asteroids.forEach(e => pm.expect(e).to.have.any.keys('name', 'a', 'e', 'i', 'om', 'w', 'ma'));",
-							"    }",
-							"    if (data && data.users && data.users.length) {",
-							"        data.users.forEach(e => pm.expect(e).to.have.any.keys('_id', 'username'));",
-							"    }",
+							"    pm.expect(data).to.be.an('array');",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
+				"url": {
+					"raw": "{{url}}/api/customer/add-list",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"customer",
+						"add-list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "createOneCustomer",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"createOneCustomer\", function () { ",
+							"    pm.response.to.have.status(201);",
+							"    const { data } = pm.response.json();",
+							"    pm.globals.set(\"customerId\", data._id);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "first_name",
+							"value": "Thor2",
+							"type": "text"
+						},
+						{
+							"key": "last_name",
+							"value": "Deloscielos2",
+							"type": "text"
+						},
+						{
+							"key": "age",
+							"value": "234",
+							"type": "text"
+						},
+						{
+							"key": "loc[0]",
+							"value": "-66",
+							"type": "text"
+						},
+						{
+							"key": "loc[1]",
+							"value": "-66",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/api/customer",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"customer"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getManyCustomer",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"getManyCustomer\", function () { ",
+							"    pm.response.to.have.status(200);",
+							"    const { data } = pm.response.json();",
+							"    pm.expect(data).to.be.an('array');",
 							"});",
 							""
 						],
@@ -615,13 +805,219 @@
 					"urlencoded": []
 				},
 				"url": {
-					"raw": "{{url}}/api/find-all",
+					"raw": "{{url}}/api/customer",
 					"host": [
 						"{{url}}"
 					],
 					"path": [
 						"api",
-						"find-all"
+						"customer"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getOneCustomer",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"getOneCustomer\", function () { ",
+							"    pm.response.to.have.status(200);",
+							"    const { data } = pm.response.json();",
+							"    pm.expect(data).to.be.an('object');",
+							"    pm.expect(data._id).to.eq(pm.request.url.path[2]);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "authorization",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "darze",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "password",
+							"value": "antrax",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/api/customer/{{customerId}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"customer",
+						"{{customerId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updateOneCustomer",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"updateOneCustomer\", function () { ",
+							"    pm.response.to.have.status(200);",
+							"    const { data } = pm.response.json();",
+							"    pm.globals.set(\"customerId\", data._id);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "authorization",
+						"type": "text",
+						"value": "",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "first_name",
+							"value": "Thor2",
+							"type": "text"
+						},
+						{
+							"key": "last_name",
+							"value": "Deloscielos2",
+							"type": "text"
+						},
+						{
+							"key": "age",
+							"value": "234",
+							"type": "text"
+						},
+						{
+							"key": "loc[0]",
+							"value": "66",
+							"type": "text"
+						},
+						{
+							"key": "loc[1]",
+							"value": "66",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/api/customer/{{customerId}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"customer",
+						"{{customerId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "removeOneCustomer",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"removeOneCustomer\", function () { ",
+							"    pm.response.to.have.status(204);",
+							"    pm.globals.unset(\"customerId\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/api/customer/{{customerId}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"customer",
+						"{{customerId}}"
 					]
 				}
 			},
@@ -635,9 +1031,7 @@
 					"script": {
 						"exec": [
 							"pm.test(\"removeOneUser\", function () { ",
-							"    pm.response.to.have.status(200);",
-							"    const { data } = pm.response.json();",
-							"    pm.expect(data._id).to.eq(pm.request.url.path[2]);",
+							"    pm.response.to.have.status(204);",
 							"    pm.globals.unset('userId');",
 							"});"
 						],
@@ -657,14 +1051,7 @@
 					]
 				},
 				"method": "DELETE",
-				"header": [
-					{
-						"key": "authorization",
-						"type": "text",
-						"value": "",
-						"disabled": true
-					}
-				],
+				"header": [],
 				"body": {
 					"mode": "urlencoded",
 					"urlencoded": []
@@ -678,45 +1065,6 @@
 						"api",
 						"user",
 						"{{userId}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "getManyAsteroidWithoutAuth",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"getManyAsteroid\", function () { ",
-							"    pm.response.to.have.status(401);",
-							"});",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "urlencoded",
-					"urlencoded": []
-				},
-				"url": {
-					"raw": "{{url}}/api/asteroid",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"api",
-						"asteroid"
 					]
 				}
 			},
