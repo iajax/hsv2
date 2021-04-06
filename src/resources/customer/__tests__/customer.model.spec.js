@@ -3,62 +3,51 @@ import { Customer } from '../customer.model'
 describe('Customer model', () => {
   describe('schema', () => {
     test('Name', () => {
-      const Name = Customer.schema.obj.Name
-      expect(Name).toEqual({
+      const first_name = Customer.schema.obj.first_name
+      expect(first_name).toEqual({
         type: String,
-        required: [true, 'Please add a name'],
+        required: [true, 'Please add a first_name'],
         trim: true,
       })
     })
 
-    test('Lastname', () => {
-      const Lastname = Customer.schema.obj.Lastname
-      expect(Lastname).toEqual({
+    test('last_name', () => {
+      const last_name = Customer.schema.obj.last_name
+      expect(last_name).toEqual({
         type: String,
-        required: [true, 'Please add a lastname'],
+        required: [true, 'Please add a last_name'],
       })
     })
 
-    test('Age', () => {
-      const Age = Customer.schema.obj.Age
-      expect(Age).toEqual({
+    test('age', () => {
+      const age = Customer.schema.obj.age
+      expect(age).toEqual({
         type: Number,
         required: [true, 'Please add an age'],
       })
     })
 
-    test('Latitude', () => {
-      const Latitude = Customer.schema.obj.Latitude
-      expect(Latitude).toEqual({
-        type: Number,
-        required: [true, 'Please provide a latitude coord'],
-      })
-    })
-
-    test('Longitude', () => {
-      const Longitude = Customer.schema.obj.Longitude
-      expect(Longitude).toEqual({
-        type: Number,
-        required: [true, 'Please provide a longitude coord'],
-      })
-    })
-
-    test('Hotspot_asteroids', () => {
-      const Hotspot_asteroids = Customer.schema.obj.Hotspot_asteroids
-      expect(Hotspot_asteroids).toEqual({
+    test('hotspot_asteroids', () => {
+      const hotspot_asteroids = Customer.schema.obj.hotspot_asteroids
+      expect(hotspot_asteroids).toEqual({
         type: Number,
         required: [true, 'Please provide a hotspot asteroids number'],
         default: 0,
       })
     })
 
-    test('Price', () => {
-      const Price = Customer.schema.obj.Price
-      expect(Price).toEqual({
+    test('price', () => {
+      const price = Customer.schema.obj.price
+      expect(price).toEqual({
         type: Number,
         required: [true, 'Please provide a price'],
         default: 0,
       })
+    })
+
+    test('loc', () => {
+      const loc = Customer.schema.obj.loc
+      expect(loc).toEqual([Number])
     })
   })
 })

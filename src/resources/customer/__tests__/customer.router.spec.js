@@ -3,11 +3,11 @@ import router from '../customer.router'
 describe('Customer router', () => {
   test('has crud routes', () => {
     const routes = [
+      { path: '/', method: 'get' },
+      { path: '/', method: 'post' },
       { path: '/:id', method: 'get' },
       { path: '/:id', method: 'delete' },
       { path: '/:id', method: 'put' },
-      { path: '/', method: 'post' },
-      { path: '/find-all', method: 'get' },
       { path: '/add-list', method: 'post' },
     ]
 
