@@ -37,12 +37,12 @@ jobs:
       - persist_to_workspace:
           root: .
           paths: .
-  lint:
+  test:
     <<: *defaults
     steps:
       - attach_workspace:
           at: ~/repo
-      - run: yarn lint
+      - run: yarn test
   build:
     <<: *defaults
     steps:
@@ -54,9 +54,9 @@ workflows:
   test-and-build:
     jobs:
       - install
-      - lint:
+      - test:
           requires:
             - install
       - build:
           requires:
-            - lint
+            - test
